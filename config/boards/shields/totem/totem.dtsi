@@ -19,20 +19,18 @@
         columns = <10>;
         rows = <4>;
         
-        // The array MUST have 40 elements (4 rows * 10 columns) separated by commas.
-        // Each number is the INDEX (0-37) of the physical key in the 'keys' array.
-        zmk,physical-layout-transform = <
-            /* R0: Left(0-4) | Right(5-9) */
-            0, 1, 2, 3, 4, 19, 20, 21, 22, 23,
+    zmk,physical-layout-transform = <
+            // R0: Left(0-4) | Right(5-9)
+            0, 1, 2, 3, 4, 19, 20, 21, 22, 23,  // <-- MUST have a comma here
             
-            /* R1: Left(0-4) | Right(5-9) */
-            5, 6, 7, 8, 9, 24, 25, 26, 27, 28,
+            // R1: Left(0-4) | Right(5-9)
+            5, 6, 7, 8, 9, 24, 25, 26, 27, 28,  // <-- MUST have a comma here
             
-            /* R2: Left(0-4) | Right(5-9) */
-            10, 11, 12, 13, 14, 29, 30, 31, 32, 33,
+            // R2: Left(0-4) | Right(5-9)
+            10, 11, 12, 13, 14, 29, 30, 31, 32, 33, // <-- MUST have a comma here
             
-            /* R3: Left(0-4) | Right(5-9) (Missing/Thumb row) */
-            -1, 15, 16, 17, 18, 34, 35, 36, 37, -1
+            // R3: Left(0-4) | Right(5-9)
+            -1, 15, 16, 17, 18, 34, 35, 36, 37, -1  // <-- Final row needs no comma after last element
         >;
         
         // ... your 'map' property must also match this 4x10 structure
