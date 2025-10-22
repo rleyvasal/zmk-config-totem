@@ -5,44 +5,34 @@
 
 #define BASE 0
 #define CODE 1
-#define MOD  2
-#define NAV  3
+#define NAV  2
+#define MOD  3
 #define ADJ  4
 
 / {
     behaviors {
-        td_eq_pct: equal_percent {
+        // Homerow mods with optimized timing
+        hml: homerow_mods_left {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             tapping-term-ms = <200>;
-            flavor = "tap-preferred";
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <300>;
+            flavor = "balanced";
             bindings = <&kp>, <&kp>;
         };
         
-        td_us_ex: underscore_exclamation {
+        hmr: homerow_mods_right {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             tapping-term-ms = <200>;
-            flavor = "tap-preferred";
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <300>;
+            flavor = "balanced";
             bindings = <&kp>, <&kp>;
         };
         
-        td_dl_am: dollar_ampersand {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            tapping-term-ms = <200>;
-            flavor = "tap-preferred";
-            bindings = <&kp>, <&kp>;
-        };
-        
-        td_at_hash: at_hash {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            tapping-term-ms = <200>;
-            flavor = "tap-preferred";
-            bindings = <&kp>, <&kp>;
-        };
-        
+        // Symbol tap/holds
         td_bt_tl: backtick_tilde {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -59,11 +49,62 @@
             bindings = <&kp>, <&kp>;
         };
         
-        td_shift_caps: shift_caps {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
+        td_amp_car: ampersand_caret {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
             tapping-term-ms = <200>;
-            bindings = <&kp LSHFT>, <&kp CAPS>;
+            flavor = "tap-preferred";
+            bindings = <&kp>, <&kp>;
+        };
+        
+        td_eq_pct: equal_percent {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            flavor = "tap-preferred";
+            bindings = <&kp>, <&kp>;
+        };
+    };
+
+    combos {
+        compatible = "zmk,combos";
+        
+        combo_esc {
+            timeout-ms = <50>;
+            key-positions = <1 2>;
+            bindings = <&kp ESC>;
+        };
+        
+        combo_dictation {
+            timeout-ms = <50>;
+            key-positions = <28 29>;
+            bindings = <&kp LA(SPACE)>;
+            slow-release;
+        };
+        
+        combo_enye {
+            timeout-ms = <50>;
+            key-positions = <9 10>;
+            bindings = <&kp RA(N)>;
+        };
+    };
+
+    macros {
+        mac_lock: mac_lock_screen {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp LGUI &kp LCTRL>
+                     , <&macro_pause_for_release>
+                     , <&macro_tap &kp Q>
+                     , <&macro_release &kp LGUI &kp LCTRL>;
+        };
+        
+        win_lock: win_lock_screen {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp LGUI>
+                     , <&macro_tap &kp L>
+                     , <&macro_release &kp LGUI>;
         };
     };
 
@@ -72,46 +113,46 @@
 
         base_layer {
             bindings = <
-            &kp LBKT    &kp Q       &kp W       &kp E       &kp R       &kp T           &kp Y       &kp U       &kp I       &kp O       &kp P       &kp RBKT
-                        &kp A       &kp S       &kp D       &kp F       &kp G           &kp H       &kp J       &kp K       &kp L       &kp SEMI
-                        &kp Z       &kp X       &kp C       &kp V       &kp B           &kp N       &kp M       &kp COMMA   &kp DOT     &kp FSLH
-                                                &lt CODE ESC &kp BSPC   &lt MOD TAB     &lt ADJ ENTER &kp SPACE &lt NAV LSHFT
+            &kp LBKT    &kp Q           &kp W           &kp E           &kp R           &kp T               &kp Y           &kp U           &kp I           &kp O           &kp P           &kp RBKT
+                        &hml LGUI A     &hml LALT S     &hml LSHFT D    &hml LCTRL F    &kp G               &kp H           &hmr RCTRL J    &hmr RSHFT K    &hmr RALT L     &hmr RGUI SEMI
+                        &kp Z           &kp X           &kp C           &kp V           &kp B               &kp N           &kp M           &kp COMMA       &kp DOT         &kp FSLH
+                                                        &lt CODE ESC    &kp BSPC        &lt MOD TAB         &lt ADJ ENTER   &kp SPACE       &lt NAV LSHFT
             >;
         };
 
         code_layer {
             bindings = <
-            &trans      &kp LBRC    &kp RBRC    &kp DQT     &td_dl_am AMPS DLLR   &td_bs_pipe PIPE BSLH     &kp FSLH    &kp N7      &kp N8      &kp N9      &kp STAR    &trans
-                        &kp LPAR    &kp RPAR    &kp SQT     &td_us_ex EXCL UNDER  &td_bt_tl TILDE GRAVE     &kp MINUS   &kp N4      &kp N5      &kp N6      &kp PLUS
-                        &sk LGUI    &sk LALT    &sk LSHFT   &sk LCTRL             &td_at_hash HASH AT       &td_eq_pct PRCNT EQUAL &kp N1 &kp N2 &kp N3      &kp DOT
-                                                &trans      &trans      &trans      &kp COMMA   &kp N0      &trans
-            >;
-        };
-
-        mod_layer {
-            bindings = <
-            &trans      &trans      &trans      &trans      &trans      &trans          &trans      &trans      &trans      &trans      &kp DEL     &trans
-                        &sk LGUI    &sk LALT    &td_shift_caps &sk LCTRL &trans          &trans      &trans      &trans      &trans      &trans
-                        &trans      &trans      &trans      &trans      &trans          &trans      &trans      &trans      &trans      &trans
-                                                &trans      &trans      &trans          &trans      &trans      &trans
+            &kp LBKT    &td_bt_tl TILDE GRAVE &kp LBKT  &kp RBKT        &kp DQT         &kp DLLR            &kp FSLH        &kp N7          &kp N8          &kp N9          &kp STAR        &kp RBKT
+                        &kp COLON       &hml LALT LPAR  &hml LSHFT RPAR &hml LCTRL SQT  &kp UNDER           &kp MINUS       &hmr RCTRL N4   &hmr RSHFT N5   &hmr RALT N6    &kp PLUS
+                        &td_amp_car CARET AMPS &td_bs_pipe PIPE BSLH &kp AT &kp HASH    &kp EXCL            &td_eq_pct PRCNT EQUAL &kp N1   &kp N2          &kp N3          &kp DOT
+                                                        &trans          &kp BSPC        &trans              &kp COMMA       &kp N0          &trans
             >;
         };
 
         nav_layer {
             bindings = <
-            &trans      &trans      &msc SCRL_UP &mmv MOVE_UP &mkp LCLK  &mkp RCLK       &kp PG_UP   &kp HOME    &kp UP      &kp END     &kp DEL     &trans
-                        &msc SCRL_LEFT &mmv MOVE_LEFT &mmv MOVE_DOWN &mmv MOVE_RIGHT &msc SCRL_RIGHT &kp PG_DN &kp LEFT &kp DOWN &kp RIGHT &kp INS
-                        &trans      &trans      &msc SCRL_DOWN &trans   &trans          &trans      &trans      &trans      &kp PSCRN   &kp K_UNDO
-                                                &trans      &trans      &trans          &trans      &trans      &trans
+            &kp LBKT    &trans          &msc SCRL_UP    &mmv MOVE_UP    &mkp LCLK       &mkp RCLK           &kp PG_UP       &kp HOME        &kp UP          &kp END         &kp DEL         &kp RBKT
+                        &msc SCRL_LEFT  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT &msc SCRL_RIGHT     &kp PG_DN       &kp LEFT        &kp DOWN        &kp RIGHT       &kp INS
+                        &trans          &msc SCRL_DOWN  &trans          &mkp MB4        &mkp MB5            &trans          &trans          &trans          &kp PSCRN       &kp K_UNDO
+                                                        &trans          &kp BSPC        &trans              &trans          &kp SPACE       &trans
+            >;
+        };
+
+        mod_layer {
+            bindings = <
+            &kp LBKT    &mac_lock       &win_lock       &trans          &trans          &trans              &kp C_PREV      &kp C_PP        &kp C_NEXT      &kp C_BRI_UP    &trans          &kp RBKT
+                        &kp CAPS        &sk LALT        &sk LSHFT       &sk LCTRL       &trans              &kp BSPC        &kp DEL         &kp SPACE       &kp ENTER       &kp TAB
+                        &trans          &trans          &trans          &trans          &trans              &kp C_VOL_DN    &kp C_MUTE      &kp C_VOL_UP    &kp C_BRI_DN    &trans
+                                                        &trans          &kp BSPC        &trans              &trans          &kp SPACE       &trans
             >;
         };
 
         adj_layer {
             bindings = <
-            &trans      &studio_unlock &kp F7   &kp F8      &kp F9      &kp F12         &trans      &trans      &trans      &trans      &bt BT_CLR_ALL &trans
-                        &trans      &kp F4      &kp F5      &kp F6      &kp F11         &trans      &bt BT_SEL 3 &bt BT_SEL 4 &trans    &trans
-                        &trans      &kp F1      &kp F2      &kp F3      &kp F10         &trans      &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_CLR
-                                                &trans      &trans      &trans          &trans      &trans      &trans
+            &kp LBKT    &studio_unlock  &kp F7          &kp F8          &kp F9          &kp F12             &trans          &trans          &trans          &trans          &bt BT_CLR_ALL  &kp RBKT
+                        &trans          &kp F4          &kp F5          &kp F6          &kp F11             &trans          &bt BT_SEL 3    &bt BT_SEL 4    &trans          &trans
+                        &trans          &kp F1          &kp F2          &kp F3          &kp F10             &trans          &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_CLR
+                                                        &trans          &kp BSPC        &trans              &trans          &kp SPACE       &trans
             >;
         };
     };
