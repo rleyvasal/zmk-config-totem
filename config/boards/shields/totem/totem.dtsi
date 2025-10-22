@@ -34,7 +34,7 @@
         >;
         
         // ... your 'map' property must also match this 4x10 structure
-    };
+
 //             | SW01  | SW02  | SW03  | SW04  | SW05  |  | SW05  | SW04  | SW03  | SW02  | SW01  |
 //             | SW06  | SW07  | SW08  | SW09  | SW10  |  | SW10  | SW09  | SW08  | SW07  | SW06  | 
 //      | SW16 | SW11  | SW12  | SW13  | SW14  | SW15  |  | SW15  | SW14  | SW13  | SW12  | SW11  | SW16  |
